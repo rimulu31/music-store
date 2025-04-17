@@ -1,144 +1,211 @@
 "use client";
 
-import { useState } from "react";
+import React, { useState } from "react";
+import MusicItem from "../components/MusicItem";
 
-export default function Home() {
-  const [products, setProducts] = useState([
+const Products = () => {
+  const [instruments, setInstruments] = useState([
     {
-      name: "Fender Guitar",
-      price: 300,
-      likes: 20,
-      image: "https://images.unsplash.com/photo-1706356104839-5d3a4e8eb35f?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8ZmVuZGVyJTIwZ3VpdGFyfGVufDB8fDB8fHww",
-      isNew: true,
+      id: 1,
+      name: "Acoustic Guitar",
+      description: "A classic instrument for all styles of music.",
+      price: 1000,
+      likes: 300,
+      img: "https://images.unsplash.com/photo-1588449668365-d15e397f6787?w=900&auto=format&fit=crop&q=60",
     },
     {
-      name: "Yamaha Piano",
-      price: 800,
-      likes: 45,
-      image: "https://images.unsplash.com/photo-1469939868368-83e00d69432e?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      isNew: true,
+      id: 2,
+      name: "Electric Guitar",
+      description: "Perfect for rock, blues, and metal.",
+      price: 1500,
+      likes: 150,
+      img: "https://images.unsplash.com/photo-1568193755668-aae18714a9f1?w=900&auto=format&fit=crop&q=60",
     },
     {
+      id: 3,
+      name: "Violin",
+      description:
+        "A beautiful string instrument used in orchestras and solo performances.",
+      price: 1300,
+      likes: 120,
+      img: "https://images.unsplash.com/photo-1612225330812-01a9c6b355ec?w=900&auto=format&fit=crop&q=60",
+    },
+    {
+      id: 4,
+      name: "Piano",
+      description: "A versatile instrument great for solo or accompaniment.",
+      price: 3000,
+      likes: 90,
+      img: "https://images.unsplash.com/photo-1520523839897-bd0b52f945a0?w=900&auto=format&fit=crop&q=60",
+    },
+    {
+      id: 5,
       name: "Drum Set",
-      price: 500,
-      likes: 34,
-      image: "https://images.unsplash.com/photo-1461784121038-f088ca1e7714?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      isNew: false,
+      description: "The backbone of any band rhythm section.",
+      price: 4000,
+      likes: 10,
+      img: "https://images.unsplash.com/photo-1543443258-92b04ad5ec6b?w=900&auto=format&fit=crop&q=60",
+    },
+    {
+      id: 6,
+      name: "Saxophone",
+      description: "A jazzy wind instrument known for its expressive sound.",
+      price: 4000,
+      likes: 50,
+      img: "https://images.unsplash.com/photo-1623123776919-e5208e9b0b47?w=900&auto=format&fit=crop&q=60",
+    },
+    {
+      id: 7,
+      name: "Flute",
+      description:
+        "A soft and soothing wind instrument, often used in orchestras.",
+      price: 2600,
+      likes: 30,
+      img: "https://images.unsplash.com/photo-1710075554684-88f369e05e99?w=900&auto=format&fit=crop&q=60",
     },
   ]);
 
-  const [form, setForm] = useState({
+  const [newInstrument, setNewInstrument] = useState({
     name: "",
-    price: "",
-    likes: "",
-    image: "",
-    isNew: false,
+    description: "",
+    price: 0,
+    likes: 0,
+    img: "",
   });
 
-  const handleAdd = () => {
-    if (form.name && form.price && form.image) {
-      const newProduct = {
-        name: form.name,
-        price: Number(form.price),
-        likes: Number(form.likes) || 0,
-        image: form.image,
-        isNew: form.isNew,
-      };
-      setProducts([...products, newProduct]);
-      setForm({ name: "", price: "", likes: "", image: "", isNew: false });
-    }
-  };
+  function AddNewInstrument() {
+    if (!newInstrument.name.trim()) return;
 
-  const handleDelete = (index: number) => {
-    setProducts(products.filter((_, i) => i !== index));
-  };
+    const instrument = {
+      id: instruments.length + 1,
+      name: newInstrument.name,
+      description: newInstrument.description,
+      price: newInstrument.price,
+      likes: newInstrument.likes,
+      img: newInstrument.img,
+    };
+    setInstruments((prev) => [...prev, instrument]);
+    setNewInstrument({
+      name: "",
+      description: "",
+      price: 0,
+      likes: 0,
+      img: "",
+    });
+  }
 
   return (
-    <main className="min-h-screen bg-gray-100">
-      <h1 className="text-3xl font-bold text-white text-center py-6 bg-gray-800">
-        Music Store
-      </h1>
-
-      <div className="max-w-3xl mx-auto bg-white p-6 rounded-xl shadow-lg mt-6 mb-6">
-        <h2 className="text-xl font-semibold mb-4">Add New Music Instrument</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <input
-            type="text"
-            placeholder="Instrument Name"
-            value={form.name}
-            onChange={(e) => setForm({ ...form, name: e.target.value })}
-            className="border p-2 rounded"
-          />
-          <input
-            type="number"
-            placeholder="Price"
-            value={form.price}
-            onChange={(e) => setForm({ ...form, price: e.target.value })}
-            className="border p-2 rounded"
-          />
-          <input
-            type="number"
-            placeholder="Likes"
-            value={form.likes}
-            onChange={(e) => setForm({ ...form, likes: e.target.value })}
-            className="border p-2 rounded"
-          />
-          <input
-            type="text"
-            placeholder="Image URL"
-            value={form.image}
-            onChange={(e) => setForm({ ...form, image: e.target.value })}
-            className="border p-2 rounded"
-          />
-          <label className="flex items-center gap-2 mt-2 md:mt-0">
-            <input
-              type="checkbox"
-              checked={form.isNew}
-              onChange={(e) => setForm({ ...form, isNew: e.target.checked })}
-            />
-            New Arrival
+    <div className="bg-gradient-to-r from-slate-200 to-sky-700">
+      <div className="flex flex-col justify-center items-center">
+        <h1 className="mt-16 text-3xl font-bold text-slate-100">
+          Musical Instruments
+        </h1>
+        <div className="max-w-sm mx-auto my-5 bg-amber-100 opacity-90 border p-5 rounded-lg shadow-lg">
+          <h1 className="text-3xl font-bold mb-4">Create New Instrument</h1>
+          <label className="text-2xl font-bold" htmlFor="name">
+            Name
           </label>
+          <input
+            name="name"
+            className="border p-2 w-full rounded-2xl my-2"
+            type="text"
+            placeholder="Enter instrument name"
+            value={newInstrument.name}
+            onChange={(e) =>
+              setNewInstrument((prev) => ({
+                ...prev,
+                name: e.target.value,
+              }))
+            }
+          />
+          <label className="text-2xl font-bold" htmlFor="age">
+            Description
+          </label>
+          <input
+            name="age"
+            className="border p-2 w-full rounded-2xl my-2"
+            type="text"
+            placeholder="Enter instrument description"
+            value={newInstrument.description}
+            onChange={(e) =>
+              setNewInstrument((prev) => ({
+                ...prev,
+                description: e.target.value,
+              }))
+            }
+          />
+          <label className="text-2xl font-bold" htmlFor="email">
+            Price
+          </label>
+          <input
+            name="email"
+            className="border p-2 w-full rounded-2xl my-2"
+            type="number"
+            placeholder="Enter instrument price"
+            value={newInstrument.price}
+            onChange={(e) =>
+              setNewInstrument((prev) => ({
+                ...prev,
+                price: Number(e.target.value),
+              }))
+            }
+          />
+          <label className="text-2xl font-bold" htmlFor="salary">
+            Likes
+          </label>
+          <input
+            name="salary"
+            className="border p-2 w-full rounded-2xl my-2"
+            type="number"
+            placeholder="Enter instrument likes"
+            value={newInstrument.likes}
+            onChange={(e) =>
+              setNewInstrument((prev) => ({
+                ...prev,
+                likes: Number(e.target.value),
+              }))
+            }
+          />
+          <label className="text-2xl font-bold" htmlFor="salary">
+            Image URL
+          </label>
+          <input
+            name="salary"
+            className="border p-2 w-full rounded-2xl my-2"
+            type="text"
+            placeholder="Enter instrument image URL"
+            value={newInstrument.img}
+            onChange={(e) =>
+              setNewInstrument((prev) => ({
+                ...prev,
+                img: e.target.value,
+              }))
+            }
+          />
         </div>
-        <button
-          onClick={handleAdd}
-          className="mt-4 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
-        >
-          Add Instrument
+        <button className=" border p-4 rounded-lg bg-green-300 hover:bg-green-200 mt-5"
+          onClick={AddNewInstrument}>
+          Add New Musical Instrument
         </button>
-      </div>
-
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 p-6">
-        {products.map((item, idx) => (
-          <div
-            key={idx}
-            className="bg-white rounded-xl shadow-md hover:shadow-lg hover:scale-105 transition-all duration-300"
-          >
-            <img
-              src={item.image}
-              alt={item.name}
-              className="w-full h-48 object-cover rounded-t-xl"
+        <div className="flex flex-wrap w-[80%] m-auto justify-center bg-slate-100 my-10 p-5 border-2 border-gray-300 rounded-lg">
+          {instruments.map((instrument) => (
+            <MusicItem
+              key={instrument.id}
+              id={instrument.id}
+              name={instrument.name}
+              description={instrument.description}
+              img={instrument.img}
+              price={instrument.price}
+              likes={instrument.likes}
             />
-            <div className="p-4">
-              <h3 className="text-lg font-semibold flex items-center justify-between">
-                {item.name}
-                {item.isNew && (
-                  <span className="ml-2 bg-green-600 text-white text-xs px-2 py-0.5 rounded">
-                    New
-                  </span>
-                )}
-              </h3>
-              <p className="text-gray-600 mt-1">Price: ${item.price}</p>
-              <p className="text-gray-600">Likes: {item.likes}</p>
-              <button
-                onClick={() => handleDelete(idx)}
-                className="mt-2 bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 text-sm"
-              >
-                Delete
-              </button>
-            </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
-    </main>
+      <footer className="bg-slate-300 text-center p-4">
+        --- Product footer ---
+      </footer>
+    </div>
   );
-}
+};
+
+export default Products;
